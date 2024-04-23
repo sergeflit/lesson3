@@ -1,0 +1,51 @@
+class Toy {
+    constructor(id, name, weight) {
+        this.id = id;
+        this.name = name;
+        this.weight = weight;
+    }
+}
+
+class ToyStore {
+    constructor() {
+        this.toys = [];
+    }
+
+    addToy(id, name, weight) {
+        const toy = new Toy(id, name, weight);
+        this.toys.push(toy);
+    }
+
+    drawToy() {
+        // Выбор случайной игрушки с учетом их веса
+        const totalWeight = this.toys.reduce((acc, toy) => acc + toy.weight, 0);
+        let randomWeight = Math.random() * totalWeight;
+        let selectedToy = null;
+
+        for (const toy of this.toys) {
+            randomWeight -= toy.weight;
+            if (randomWeight <= 0) {
+                selectedToy = toy;
+                break;
+            }
+        }
+
+        return selectedToy;
+    }
+}
+
+// Пример использования
+const toyStore = new ToyStore();
+
+// Добавляем игрушки
+toyStore.addToy(1, 'Кукла', 3);
+toyStore.addToy(2, 'Машинка', 2);
+toyStore.addToy(3, 'Мяч', 5);
+
+// Проводим розыгрыш
+const winner = toyStore.drawToy();
+if (winner) {
+    console.log(`Поздравляем! Вы выиграли игрушку "${winner.name}"!`);
+} else {
+    console.log("Извините, в этот раз не удалось выиграть ни одной игрушки.");
+}
